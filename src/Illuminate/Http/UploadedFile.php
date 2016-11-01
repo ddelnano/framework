@@ -2,6 +2,7 @@
 
 namespace Illuminate\Http;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Traits\Macroable;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
@@ -52,12 +53,14 @@ class UploadedFile extends SymfonyUploadedFile
      */
     public static function createFromBase(SymfonyUploadedFile $file)
     {
+        $test = Config::get('app.env') == 'testing';
         return $file instanceof static ? $file : new static(
             $file->getPathname(),
             $file->getClientOriginalName(),
             $file->getClientMimeType(),
             $file->getClientSize(),
-            $file->getError()
+            $file->getError(),
+            $test
         );
     }
 }
